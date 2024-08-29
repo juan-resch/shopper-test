@@ -4,8 +4,11 @@ import { TypeOrmModule } from '@nestjs/typeorm'
 import { EnvModule } from '../env/env.module'
 import { EnvService } from '../env/env.service'
 
-const entities = []
-const repositories = []
+import { Measurementment } from '@/modules/measurement/domain/entities/measurement.entity'
+import { MeasurementmentsRepository } from '@/modules/measurement/domain/repositories/measurement.repository'
+
+const entities = [Measurementment]
+const repositories = [MeasurementmentsRepository]
 
 @Module({
   imports: [
@@ -13,8 +16,6 @@ const repositories = []
       inject: [EnvService],
       imports: [EnvModule],
       useFactory: (envService: EnvService) => {
-        const isDev = envService.get('NODE_ENV') === 'development'
-
         return {
           database: envService.get('DATABASE_NAME'),
           host: envService.get('DATABASE_HOST'),
@@ -23,8 +24,8 @@ const repositories = []
           password: envService.get('DATABASE_PASSWORD'),
           entities,
           type: 'postgres',
-          synchronize: isDev,
-          autoLoadEntities: isDev,
+          synchronize: true,
+          autoLoadEntities: true,
         }
       },
     }),

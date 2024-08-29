@@ -7,7 +7,8 @@
   "scripts": {
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
-    "start": "node create-database-if-not-exists.js && node dist/src/main.js",
+    "start": "node create-database-if-not-exists.js && npm run typeorm:sync && node dist/src/main.js",
+    "typeorm:sync": "typeorm schema:sync",
     "dev": "node create-database-if-not-exists.js && nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
@@ -23,6 +24,7 @@
   },
   "dependencies": {
     "@faker-js/faker": "^8.4.0",
+    "@google/generative-ai": "^0.17.1",
     "@nestjs/cli": "^9.0.0",
     "@nestjs/common": "^10.3.10",
     "@nestjs/config": "^3.1.1",
@@ -30,6 +32,7 @@
     "@nestjs/event-emitter": "^2.0.4",
     "@nestjs/jwt": "^10.2.0",
     "@nestjs/platform-express": "^10.3.10",
+    "@nestjs/serve-static": "^4.0.2",
     "@nestjs/swagger": "^7.2.0",
     "@nestjs/typeorm": "^10.0.2",
     "@prisma/client": "^5.11.0",
