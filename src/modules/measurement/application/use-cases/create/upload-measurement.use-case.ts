@@ -2,9 +2,9 @@ import { ConflictException, Injectable } from '@nestjs/common'
 import * as moment from 'moment'
 import { Between } from 'typeorm'
 
-import { Measurementment } from '../../domain/entities/measurement.entity'
-import { MeasurementmentsRepository } from '../../domain/repositories/measurement.repository'
-import { UploadMeasurementDTO } from '../dtos/upload-measurement.dto'
+import { Measurement } from '../../../domain/entities/measurement.entity'
+import { MeasurementsRepository } from '../../../domain/repositories/measurement.repository'
+import { UploadMeasurementDTO } from '../../dtos/upload-measurement.dto'
 
 import { Either, left, right } from '@/@core/either'
 import { GetMeasureFromImage } from '@/modules/gemini/application/use-cases/get-measure-from-image.use-case'
@@ -22,7 +22,7 @@ type UploadMeasurementUseCaseResponse = Either<
 @Injectable()
 export class UploadMeasurementUseCase {
   constructor(
-    private readonly measurementmentsRepository: MeasurementmentsRepository,
+    private readonly measurementmentsRepository: MeasurementsRepository,
     private readonly imageService: ImageService,
     private readonly getMeasureFromImage: GetMeasureFromImage
   ) {}
@@ -41,17 +41,9 @@ export class UploadMeasurementUseCase {
     })
 
     if (existingMeasurement > 0)
-      return left(new ConflictException('Leitura do mês já realizada'))
-
-    const measurement = Measurementment.create({
-      custumerCode: params.customer_code,
-      type: params.measure_type,
-      image: params.image || null,
-    })
-
-    const createdMeasure = await this.measurementmentsRepository.save(
-      measurement
-    )
+      return left(
+        new ConflictException('Leitura do mês já realizada', 'DOUBLE_REPORT')
+      )
 
     const { temporaryLink, filePath } = await this.imageService.saveBase64Image(
       params.image
@@ -60,6 +52,19 @@ export class UploadMeasurementUseCase {
     const { amount } = await this.getMeasureFromImage.execute({
       imagePath: filePath,
     })
+
+    const measurement = Measurement.create({
+      custumerCode: params.customer_code,
+      type: params.measure_type,
+      readDate: new Date(params.measure_datetime),
+      imageBase64: params.image || null,
+      imageURL: temporaryLink,
+      value: amount,
+    })
+
+    const createdMeasure = await this.measurementmentsRepository.save(
+      measurement
+    )
 
     return right({
       image_url: temporaryLink,

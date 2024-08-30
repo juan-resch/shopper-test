@@ -1,4 +1,4 @@
-import { Inject, Injectable, Logger } from '@nestjs/common'
+import { Inject, Injectable } from '@nestjs/common'
 
 import { GeminiService } from '../../services/google/gemini/gemini.service'
 
@@ -33,13 +33,17 @@ export class GetMeasureFromImage {
         },
       },
       {
-        text: 'Eu preciso que extraia o valor dessa leitura de gás / água. Quero apenas o número da leitura e nada mais, pois preciso converter para number na minha aplicação',
+        text: 'Eu preciso que extraia o valor dessa leitura de gás / água. Quero como resultado apenas o número da leitura considerando casas decimais, use "." ao invés de "," na casa decimal',
       },
     ])
 
-    const text = result.response.text()
+    const amount = this.extractNumber(result.response.text())
 
-    Logger.log(text)
-    return { amount: parseFloat(text) }
+    return { amount }
+  }
+
+  private extractNumber(text: string) {
+    const match = text.match(/\d+(\.\d+)?/)
+    return match ? parseFloat(match[0]) : 0
   }
 }

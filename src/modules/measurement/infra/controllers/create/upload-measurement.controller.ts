@@ -8,13 +8,13 @@ import {
 import { z } from 'zod'
 
 import { UploadMeasurementDTO } from '@/modules/measurement/application/dtos/upload-measurement.dto'
-import { UploadMeasurementUseCase } from '@/modules/measurement/application/use-cases/upload-measurement.use-case'
+import { UploadMeasurementUseCase } from '@/modules/measurement/application/use-cases/create/upload-measurement.use-case'
 import { ZodValidationPipe } from '@/shared/https/pipes/zod-validation-pipe'
 
 const bodySchema = z.object({
-  image: z.string().base64(),
+  image: z.string().base64('Base64 inválido'),
   customer_code: z.string(),
-  measure_datetime: z.string().date(),
+  measure_datetime: z.string().date('Forneça uma data válida'),
   measure_type: z.enum(['WATER', 'GAS']),
 })
 
@@ -39,7 +39,9 @@ export class UploadMeasurementController {
     description: 'Conflict',
   })
   async handle(@Body(validationPipe) data: UploadMeasurementDTO) {
-    const { value } = await this.uploadMeasurementUseCase.execute(data)
+    const { value, isLeft } = await this.uploadMeasurementUseCase.execute(data)
+
+    if (isLeft()) throw value
 
     return value
   }

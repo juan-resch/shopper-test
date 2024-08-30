@@ -11,7 +11,7 @@ export class GeminiService extends GoogleGenerativeAI {
   }
 
   getDefaultModel() {
-    return this.getGenerativeModel({ model: 'gemini-1.5-pro' })
+    return this.getGenerativeModel({ model: 'gemini-1.5-flash' })
   }
 
   getAIFileManager() {

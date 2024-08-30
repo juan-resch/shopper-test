@@ -4,11 +4,11 @@ import { TypeOrmModule } from '@nestjs/typeorm'
 import { EnvModule } from '../env/env.module'
 import { EnvService } from '../env/env.service'
 
-import { Measurementment } from '@/modules/measurement/domain/entities/measurement.entity'
-import { MeasurementmentsRepository } from '@/modules/measurement/domain/repositories/measurement.repository'
+import { Measurement } from '@/modules/measurement/domain/entities/measurement.entity'
+import { MeasurementsRepository } from '@/modules/measurement/domain/repositories/measurement.repository'
 
-const entities = [Measurementment]
-const repositories = [MeasurementmentsRepository]
+const entities = [Measurement]
+const repositories = [MeasurementsRepository]
 
 @Module({
   imports: [
