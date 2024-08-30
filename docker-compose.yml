@@ -6,10 +6,12 @@ services:
     volumes:
       - .:/usr/src/app
     env_file:
-    - .env
+      - .env
     command: npm run dev
     ports:
       - 8000:8000
+    depends_on:
+      - postgres
   postgres:
     image: postgres
     restart: always
@@ -19,8 +21,6 @@ services:
       POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
     ports:
       - '5432:5432'
-    volumes:
-      - docker-nest-postgres:/var/lib/postgresql/data
 
 volumes:
   docker-nest-postgres:
