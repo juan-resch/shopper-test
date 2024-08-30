@@ -1,5 +1,5 @@
 import { ConflictException, Injectable } from '@nestjs/common'
-import * as moment from 'moment'
+import moment from 'moment'
 import { Between } from 'typeorm'
 
 import { Measurement } from '../../../domain/entities/measurement.entity'
