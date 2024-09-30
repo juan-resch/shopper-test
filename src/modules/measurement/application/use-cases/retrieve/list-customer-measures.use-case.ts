@@ -11,7 +11,10 @@ import { MeasurementsRepository } from '@/modules/measurement/domain/repositorie
 
 type ListCustomerMeasureUseCaseResponse = Either<
   NotFoundException,
-  PublicMeasure[]
+  {
+    customer_code: string
+    measures: PublicMeasure[]
+  }
 >
 
 @Injectable()
@@ -36,6 +39,9 @@ export class ListCustomerMeasureUseCase {
         )
       )
 
-    return right(result.map(Measurement.toPublic))
+    return right({
+      customer_code: params.customer_code,
+      measures: result.map(Measurement.toPublic),
+    })
   }
 }
