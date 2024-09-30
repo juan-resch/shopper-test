@@ -51,9 +51,9 @@ export class ListCustomerMeasureController {
       type = measure_type.toUpperCase()
     }
 
-    if (type && (type != MeasureTypes.GAS || type != MeasureTypes.WATER))
+    if (type && type !== MeasureTypes.GAS && type !== MeasureTypes.WATER)
       throw new BadRequestException(
-        'Tipo de medição nãopermitida',
+        'Tipo de medição não permitida',
         'INVALID_TYPE'
       )
 
