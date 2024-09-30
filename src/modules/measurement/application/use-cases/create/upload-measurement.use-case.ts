@@ -46,6 +46,7 @@ export class UploadMeasurementUseCase {
     const existingMeasurement = await this.measurementmentsRepository.count({
       where: {
         readDate: Between(startMonth, endMonth),
+        type: params.measure_type,
         custumerCode: params.customer_code,
       },
     })
