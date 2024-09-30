@@ -18,6 +18,11 @@ Antes de rodar o projeto, é necessário configurar as variáveis de ambiente. U
 - `docker compose up` para iniciar o projeto com docker.
 - `npm run test` ou `yarn test` para executar os testes unitários.
 
+3. **Detalhes**
+
+- A api roda na porta 8000 sem prefixos
+- Acesse: <http://localhost:8000/docs> para ver a documentação.
+
 ## Observações
 
 Ao longo do desenvolvimento e testes desse projeto foi percebido que o modelo do Google Gemini `gemini-1.5-pro` apresenta falhas recorrentes retornando erro 500. Dito isso, optei por usar o modelo `gemini-1.5-flash` que não apresentou erros, mas, em contrapartida, o input de texto para extração dos dados não funcionava sempre e teve que ser ajustado.
