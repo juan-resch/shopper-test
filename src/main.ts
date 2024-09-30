@@ -10,8 +10,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule)
 
   const config = new DocumentBuilder()
-    .setTitle('SHOPPER - VERSION')
-    .setDescription('Sample description')
+    .setTitle('Shopper Test - Api Documentation')
     .setVersion('1.0')
     .build()
 
