@@ -30,12 +30,22 @@ export class UploadMeasurementUseCase {
   async execute(
     params: UploadMeasurementDTO
   ): Promise<UploadMeasurementUseCaseResponse> {
-    const startMonth = moment({ day: 1 }).toDate()
-    const endMonth = moment({ day: 31 }).toDate()
+    const measureDate = moment(params.measure_datetime)
+
+    const startMonth = new Date(
+      moment({ month: measureDate.get('month') })
+        .startOf('month')
+        .format('YYYY-MM-DD')
+    )
+    const endMonth = new Date(
+      moment({ month: measureDate.get('month') })
+        .endOf('month')
+        .format('YYYY-MM-DD')
+    )
 
     const existingMeasurement = await this.measurementmentsRepository.count({
       where: {
-        createdAt: Between(startMonth, endMonth),
+        readDate: Between(startMonth, endMonth),
         custumerCode: params.customer_code,
       },
     })
