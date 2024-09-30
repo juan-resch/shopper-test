@@ -10,7 +10,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule)
 
   const config = new DocumentBuilder()
-    .setTitle('APINAME - VERSION')
+    .setTitle('SHOPPER - VERSION')
     .setDescription('Sample description')
     .setVersion('1.0')
     .build()
@@ -24,7 +24,6 @@ async function bootstrap() {
     dsn: process.env.SENTRY_DSN,
   })
 
-  app.setGlobalPrefix('api/v1')
   app.useGlobalFilters(new HttpException())
   app.useGlobalFilters(new SentryFilter(httpAdapter))
   app.enableCors()
